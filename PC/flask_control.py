@@ -107,9 +107,8 @@ def start():
 
 @app.route('/songs')
 def showSongs():
-    #return render_template("songs.html", songs = getMusicInfoLocal())
     client.loop_start()
-    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)#gibt falsche daten zurück (nicht songs, sondern received oder getSongs) ==> checken
+    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)
     time.sleep(1)
     client.loop_stop()
     return render_template("songs.html", songs = getMusicInfo(neededSongs))
@@ -121,13 +120,10 @@ def play(name):
     client.loop_start()
     client.publish("pro/music", payload = client._client_id.decode("utf-8") + "-play-" + name+".mp3", qos=1)
     client.loop_stop()
-    #mixer.init()
-    #mixer.music.load(name)
-    #mixer.music.play()
     time.sleep(0.1)
     client.loop_start()
-    #client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)#gibt falsche daten zurück (nicht songs, sondern received oder getSongs) ==> checken
-    #time.sleep(0.1)
+    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)
+    time.sleep(0.1)
     client.loop_stop()
     return render_template("songs.html", songs=getMusicInfo(neededSongs))
 
@@ -139,7 +135,7 @@ def stop():
     client.loop_stop()
     time.sleep(0.1)
     client.loop_start()
-    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)#gibt falsche daten zurück (nicht songs, sondern received oder getSongs) ==> checken
+    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)
     time.sleep(0.1)
     client.loop_stop()
     #mixer.music.stop()
@@ -152,7 +148,7 @@ def pause():
     client.loop_stop()
     time.sleep(0.1)
     client.loop_start()
-    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)#gibt falsche daten zurück (nicht songs, sondern received oder getSongs) ==> checken
+    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)
     time.sleep(1)
     client.loop_stop()
     #mixer.music.pause()
@@ -165,7 +161,7 @@ def unpause():
     client.loop_stop()
     time.sleep(0.1)
     client.loop_start()
-    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)#gibt falsche daten zurück (nicht songs, sondern received oder getSongs) ==> checken
+    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)
     time.sleep(1)
     client.loop_stop()
     #mixer.music.unpause()
@@ -178,13 +174,12 @@ def volume(volume):
     print(volume)
     val = float(volume)
     valPyGame = val/100
-    client.loop_start()
-    
+    client.loop_start() 
     client.publish("pro/music", payload = client._client_id.decode("utf-8") + "-"+str(valPyGame), qos=1)
     client.loop_stop()
     time.sleep(1)
     client.loop_start()
-    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)#gibt falsche daten zurück (nicht songs, sondern received oder getSongs) ==> checken
+    client.publish("pro/music", payload=client._client_id.decode("utf-8") + "-getSongs", qos=1)
     time.sleep(1)
     client.loop_stop()
     print(valPyGame)
